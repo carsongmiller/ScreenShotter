@@ -53,6 +53,9 @@ namespace ScreenShotter
 
 			tbSaveLocation.Text = Directory.GetCurrentDirectory();
 			toolTip1.SetToolTip(tbSaveLocation, tbSaveLocation.Text);
+
+			cmbRegionToCapture.SelectedIndex = 0;
+			cmbImageFormat.SelectedIndex = 0;
 		}
 
 		private void StartScreenshotTimer(double interval)
@@ -102,9 +105,47 @@ namespace ScreenShotter
 
 		private void TakeOfficialScreenshot()
 		{
-			string filePath = $"{currentSaveDir}\\{imageCount}.jpg";
-			TakeScreenshot(filePath);
+			string filePath = $"{currentSaveDir}\\{imageCount}{GetImageExtension()}";
+			TakeScreenshot(filePath, GetImageFormat());
 			imageCount += 1;
+		}
+
+		private string GetImageExtension()
+		{
+			switch (cmbImageFormat.Text)
+			{
+				case "JPG":
+					return ".jpg";
+				case "PNG":
+					return ".png";
+				case "BMP":
+					return ".bmp";
+				case "TIFF":
+					return ".tiff";
+				case "GIF":
+					return ".gif";
+				default:
+					return ".jpg";
+			}
+		}
+
+		private ImageFormat GetImageFormat()
+		{
+			switch (cmbImageFormat.Text)
+			{
+				case "JPG":
+					return ImageFormat.Jpeg;
+				case "PNG":
+					return ImageFormat.Png;
+				case "BMP":
+					return ImageFormat.Bmp;
+				case "TIFF":
+					return ImageFormat.Tiff;
+				case "GIF":
+					return ImageFormat.Gif;
+				default:
+					return ImageFormat.Jpeg;
+			}
 		}
 
 		private void CursorPositionTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -171,7 +212,9 @@ namespace ScreenShotter
 
 			btnStop.Enabled = true;
 			btnStart.Enabled = false;
+			btnOpenCurrentFolder.Enabled = true;
 			btnManualScreenshot.Enabled = true;
+			btnTest.Enabled = false;
 			grpBasicSettings.Enabled = false;
 			grpSelectedArea.Enabled = false;
 
@@ -180,13 +223,13 @@ namespace ScreenShotter
 			lblTimeRemaining.Enabled = true;
 		}
 
-		private void CaptureMonitor(int monitorIndex, string saveFilePath)
+		private void CaptureMonitor(int monitorIndex, string saveFilePath, ImageFormat format)
 		{
 			var bounds = Screen.AllScreens[monitorIndex].Bounds;
-			CaptureArea(bounds, saveFilePath);
+			CaptureArea(bounds, saveFilePath, format);
 		}
 
-		private void CaptureWholeDisplay(string saveFilePath)
+		private void CaptureWholeDisplay(string saveFilePath, ImageFormat format)
 		{
 			//Get the limits in all 4 directions of monitors
 			int left = 0;
@@ -204,18 +247,28 @@ namespace ScreenShotter
 
 			Rectangle bounds = new Rectangle(left, top, right - left, bottom - top);
 
-			CaptureArea(bounds, saveFilePath);
+			CaptureArea(bounds, saveFilePath, format);
 		}
 
-		private void CaptureArea(Rectangle bounds, string saveFilePath)
+		private void CaptureArea(Rectangle bounds, string saveFilePath, ImageFormat format)
 		{
 			try
 			{
+				//Capture the correct area into a bitmap object
 				Bitmap captureBitmap = new Bitmap(bounds.Width, bounds.Height, PixelFormat.Format32bppArgb);
 				Rectangle captureRectangle = bounds;
 				Graphics captureGraphics = Graphics.FromImage(captureBitmap);
 				captureGraphics.CopyFromScreen(captureRectangle.Left, captureRectangle.Top, 0, 0, captureRectangle.Size);
-				captureBitmap.Save(saveFilePath, ImageFormat.Jpeg);
+
+				//Specify image quality
+				ImageCodecInfo formatSpecificEncoder = GetEncoder(format);
+				System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
+				EncoderParameters myEncoderParameters = new EncoderParameters(1);
+				EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, 100L); //Always take at the highest qualitiy
+				myEncoderParameters.Param[0] = myEncoderParameter;
+
+				//Save the image
+				captureBitmap.Save(saveFilePath, formatSpecificEncoder, myEncoderParameters);
 			}
 			catch (Exception ex)
 			{
@@ -223,10 +276,23 @@ namespace ScreenShotter
 			}
 		}
 
+		private ImageCodecInfo GetEncoder(ImageFormat format)
+		{
+			ImageCodecInfo[] codecs = ImageCodecInfo.GetImageEncoders();
+
+			foreach (ImageCodecInfo codec in codecs)
+			{
+				if (codec.FormatID == format.Guid)
+				{
+					return codec;
+				}
+			}
+
+			return null;
+		}
+
 		private void btnSaveLocationOpen_Click(object sender, EventArgs e)
 		{
-
-
 			if (Directory.Exists(tbSaveLocation.Text))
 			{
 				ProcessStartInfo startInfo = new ProcessStartInfo
@@ -245,14 +311,14 @@ namespace ScreenShotter
 
 		private void btnTest_Click(object sender, EventArgs e)
 		{
-			string path = $"{tbSaveLocation.Text}\\test.jpg";
-			if (TakeScreenshot(path))
+			string path = $"{tbSaveLocation.Text}\\test{GetImageExtension()}";
+			if (TakeScreenshot(path, GetImageFormat()))
 			{
 				Process.Start(path);
 			}
 		}
 
-		private bool TakeScreenshot(string saveFilePath)
+		private bool TakeScreenshot(string saveFilePath, ImageFormat format)
 		{
 			if (cmbRegionToCapture.SelectedIndex < 0)
 			{
@@ -269,14 +335,14 @@ namespace ScreenShotter
 
 			else if (selectedText == "Whole Display")
 			{
-				CaptureWholeDisplay(saveFilePath);
+				CaptureWholeDisplay(saveFilePath, format);
 				return true;
 			}
 
 			else if (selectedText.Substring(0, 7) == "Monitor")
 			{
 				var monitor = Convert.ToInt32(selectedText.Substring(selectedText.Length - 2)) - 1;
-				CaptureMonitor(monitor, saveFilePath);
+				CaptureMonitor(monitor, saveFilePath, format);
 				return true;
 			}
 
@@ -288,7 +354,7 @@ namespace ScreenShotter
 				int bottom = (int)nudSelectedAreaLowerRight_Y.Value;
 
 				var bounds = new Rectangle(left, top, right - left, bottom - top);
-				CaptureArea(bounds, saveFilePath);
+				CaptureArea(bounds, saveFilePath, format);
 				return true;
 			}
 			else
@@ -303,7 +369,9 @@ namespace ScreenShotter
 
 			btnStart.Enabled = true;
 			btnStop.Enabled = false;
+			btnOpenCurrentFolder.Enabled = false;
 			btnManualScreenshot.Enabled = false;
+			btnTest.Enabled = true;
 			grpBasicSettings.Enabled = true;
 			grpSelectedArea.Enabled = cmbRegionToCapture.SelectedItem.ToString() == "Specified Area";
 
@@ -314,11 +382,25 @@ namespace ScreenShotter
 			lblProgressBar.Enabled = false;
 			progNextScreenshot.Enabled = false;
 			lblTimeRemaining.Enabled = false;
+
+			currentSaveDir = "";
 		}
 
 		private void btnManualScreenshot_Click(object sender, EventArgs e)
 		{
 			TakeOfficialScreenshot();
+		}
+
+		private void btnOpenCurrentFolder_Click(object sender, EventArgs e)
+		{
+			if (Directory.Exists(currentSaveDir))
+			{
+				Process.Start(currentSaveDir);
+			}
+			else
+			{
+				MessageBox.Show($"Directory does not exist:\n\n{currentSaveDir}");
+			}
 		}
 	}
 }

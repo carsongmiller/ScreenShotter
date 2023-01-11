@@ -63,6 +63,9 @@
 			this.lblProgressBar = new System.Windows.Forms.Label();
 			this.lblTimeRemaining = new System.Windows.Forms.Label();
 			this.btnManualScreenshot = new System.Windows.Forms.Button();
+			this.cmbImageFormat = new System.Windows.Forms.ComboBox();
+			this.lblImageFormat = new System.Windows.Forms.Label();
+			this.btnOpenCurrentFolder = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.nudInterval)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.nudSelectedAreaUpperLeft_X)).BeginInit();
 			this.grpSelectedArea.SuspendLayout();
@@ -84,8 +87,9 @@
             0,
             0});
 			this.nudInterval.Name = "nudInterval";
-			this.nudInterval.Size = new System.Drawing.Size(177, 20);
+			this.nudInterval.Size = new System.Drawing.Size(302, 20);
 			this.nudInterval.TabIndex = 0;
+			this.toolTip1.SetToolTip(this.nudInterval, "Time between automatic screenshots");
 			this.nudInterval.Value = new decimal(new int[] {
             10,
             0,
@@ -100,6 +104,7 @@
 			this.lblInterval.Size = new System.Drawing.Size(87, 13);
 			this.lblInterval.TabIndex = 1;
 			this.lblInterval.Text = "Interval (minutes)";
+			this.toolTip1.SetToolTip(this.lblInterval, "Time between automatic screenshots");
 			// 
 			// lblSaveLocation
 			// 
@@ -109,6 +114,8 @@
 			this.lblSaveLocation.Size = new System.Drawing.Size(108, 13);
 			this.lblSaveLocation.TabIndex = 2;
 			this.lblSaveLocation.Text = "Image Save Location";
+			this.toolTip1.SetToolTip(this.lblSaveLocation, "Inside this folder, a new folder will be created with the current time and date, " +
+        "and images will be saved inside of THAT folder");
 			// 
 			// tbSaveLocation
 			// 
@@ -116,14 +123,16 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.tbSaveLocation.Location = new System.Drawing.Point(132, 45);
 			this.tbSaveLocation.Name = "tbSaveLocation";
-			this.tbSaveLocation.Size = new System.Drawing.Size(177, 20);
+			this.tbSaveLocation.Size = new System.Drawing.Size(302, 20);
 			this.tbSaveLocation.TabIndex = 1;
 			this.tbSaveLocation.Text = "C:\\";
+			this.toolTip1.SetToolTip(this.tbSaveLocation, "Inside this folder, a new folder will be created with the current time and date, " +
+        "and images will be saved inside of THAT folder");
 			// 
 			// btnSaveLocationBrowse
 			// 
 			this.btnSaveLocationBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnSaveLocationBrowse.Location = new System.Drawing.Point(315, 44);
+			this.btnSaveLocationBrowse.Location = new System.Drawing.Point(440, 44);
 			this.btnSaveLocationBrowse.Name = "btnSaveLocationBrowse";
 			this.btnSaveLocationBrowse.Size = new System.Drawing.Size(57, 22);
 			this.btnSaveLocationBrowse.TabIndex = 2;
@@ -134,10 +143,10 @@
 			// btnTest
 			// 
 			this.btnTest.Enabled = false;
-			this.btnTest.Location = new System.Drawing.Point(318, 252);
+			this.btnTest.Location = new System.Drawing.Point(442, 282);
 			this.btnTest.Name = "btnTest";
 			this.btnTest.Size = new System.Drawing.Size(75, 23);
-			this.btnTest.TabIndex = 26;
+			this.btnTest.TabIndex = 14;
 			this.btnTest.Text = "Test";
 			this.toolTip1.SetToolTip(this.btnTest, "Capture an image with the current settings to make sure they\'re ok");
 			this.btnTest.UseVisualStyleBackColor = true;
@@ -146,11 +155,12 @@
 			// btnStart
 			// 
 			this.btnStart.Enabled = false;
-			this.btnStart.Location = new System.Drawing.Point(12, 252);
+			this.btnStart.Location = new System.Drawing.Point(12, 282);
 			this.btnStart.Name = "btnStart";
 			this.btnStart.Size = new System.Drawing.Size(75, 23);
-			this.btnStart.TabIndex = 9;
+			this.btnStart.TabIndex = 11;
 			this.btnStart.Text = "Start";
+			this.toolTip1.SetToolTip(this.btnStart, "Start the screenshot timer");
 			this.btnStart.UseVisualStyleBackColor = true;
 			this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
 			// 
@@ -162,6 +172,7 @@
 			this.lblRegionToCapture.Size = new System.Drawing.Size(93, 13);
 			this.lblRegionToCapture.TabIndex = 6;
 			this.lblRegionToCapture.Text = "Region to Capture";
+			this.toolTip1.SetToolTip(this.lblRegionToCapture, "Region of the screen to capture");
 			// 
 			// cmbRegionToCapture
 			// 
@@ -171,8 +182,9 @@
 			this.cmbRegionToCapture.FormattingEnabled = true;
 			this.cmbRegionToCapture.Location = new System.Drawing.Point(132, 71);
 			this.cmbRegionToCapture.Name = "cmbRegionToCapture";
-			this.cmbRegionToCapture.Size = new System.Drawing.Size(177, 21);
-			this.cmbRegionToCapture.TabIndex = 3;
+			this.cmbRegionToCapture.Size = new System.Drawing.Size(302, 21);
+			this.cmbRegionToCapture.TabIndex = 4;
+			this.toolTip1.SetToolTip(this.cmbRegionToCapture, "Region of the screen to capture");
 			this.cmbRegionToCapture.SelectedIndexChanged += new System.EventHandler(this.cmbSelectedArea_SelectedIndexChanged);
 			// 
 			// nudSelectedAreaUpperLeft_X
@@ -190,7 +202,7 @@
             -2147483648});
 			this.nudSelectedAreaUpperLeft_X.Name = "nudSelectedAreaUpperLeft_X";
 			this.nudSelectedAreaUpperLeft_X.Size = new System.Drawing.Size(63, 20);
-			this.nudSelectedAreaUpperLeft_X.TabIndex = 5;
+			this.nudSelectedAreaUpperLeft_X.TabIndex = 7;
 			// 
 			// lblSelectedAreaUpperLeft_X
 			// 
@@ -217,20 +229,21 @@
 			this.grpSelectedArea.Controls.Add(this.lblSelectedAreaUpperLeft_X);
 			this.grpSelectedArea.Controls.Add(this.nudSelectedAreaUpperLeft_X);
 			this.grpSelectedArea.Enabled = false;
-			this.grpSelectedArea.Location = new System.Drawing.Point(12, 119);
+			this.grpSelectedArea.Location = new System.Drawing.Point(12, 149);
 			this.grpSelectedArea.Name = "grpSelectedArea";
-			this.grpSelectedArea.Size = new System.Drawing.Size(441, 78);
-			this.grpSelectedArea.TabIndex = 4;
+			this.grpSelectedArea.Size = new System.Drawing.Size(566, 78);
+			this.grpSelectedArea.TabIndex = 6;
 			this.grpSelectedArea.TabStop = false;
 			this.grpSelectedArea.Text = "Selected Area";
+			this.toolTip1.SetToolTip(this.grpSelectedArea, "Use coordinates shown in bottom right of this window to ");
 			// 
 			// lblLowerRight
 			// 
 			this.lblLowerRight.AutoSize = true;
-			this.lblLowerRight.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblLowerRight.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.lblLowerRight.Location = new System.Drawing.Point(8, 47);
 			this.lblLowerRight.Name = "lblLowerRight";
-			this.lblLowerRight.Size = new System.Drawing.Size(75, 13);
+			this.lblLowerRight.Size = new System.Drawing.Size(64, 13);
 			this.lblLowerRight.TabIndex = 19;
 			this.lblLowerRight.Text = "Lower Right";
 			this.lblLowerRight.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -260,7 +273,7 @@
             -2147483648});
 			this.nudSelectedAreaLowerRight_Y.Name = "nudSelectedAreaLowerRight_Y";
 			this.nudSelectedAreaLowerRight_Y.Size = new System.Drawing.Size(63, 20);
-			this.nudSelectedAreaLowerRight_Y.TabIndex = 8;
+			this.nudSelectedAreaLowerRight_Y.TabIndex = 10;
 			this.nudSelectedAreaLowerRight_Y.Value = new decimal(new int[] {
             500,
             0,
@@ -292,7 +305,7 @@
             -2147483648});
 			this.nudSelectedAreaLowerRight_X.Name = "nudSelectedAreaLowerRight_X";
 			this.nudSelectedAreaLowerRight_X.Size = new System.Drawing.Size(63, 20);
-			this.nudSelectedAreaLowerRight_X.TabIndex = 7;
+			this.nudSelectedAreaLowerRight_X.TabIndex = 9;
 			this.nudSelectedAreaLowerRight_X.Value = new decimal(new int[] {
             500,
             0,
@@ -302,10 +315,10 @@
 			// lblUpperLeft
 			// 
 			this.lblUpperLeft.AutoSize = true;
-			this.lblUpperLeft.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblUpperLeft.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.lblUpperLeft.Location = new System.Drawing.Point(8, 21);
 			this.lblUpperLeft.Name = "lblUpperLeft";
-			this.lblUpperLeft.Size = new System.Drawing.Size(67, 13);
+			this.lblUpperLeft.Size = new System.Drawing.Size(57, 13);
 			this.lblUpperLeft.TabIndex = 14;
 			this.lblUpperLeft.Text = "Upper Left";
 			this.lblUpperLeft.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -335,59 +348,63 @@
             -2147483648});
 			this.nudSelectedAreaUpperLeft_Y.Name = "nudSelectedAreaUpperLeft_Y";
 			this.nudSelectedAreaUpperLeft_Y.Size = new System.Drawing.Size(63, 20);
-			this.nudSelectedAreaUpperLeft_Y.TabIndex = 6;
+			this.nudSelectedAreaUpperLeft_Y.TabIndex = 88;
 			// 
 			// lblCurrentCursor_Xlabel
 			// 
 			this.lblCurrentCursor_Xlabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblCurrentCursor_Xlabel.AutoSize = true;
-			this.lblCurrentCursor_Xlabel.Location = new System.Drawing.Point(410, 247);
+			this.lblCurrentCursor_Xlabel.Location = new System.Drawing.Point(535, 277);
 			this.lblCurrentCursor_Xlabel.Name = "lblCurrentCursor_Xlabel";
 			this.lblCurrentCursor_Xlabel.Size = new System.Drawing.Size(17, 13);
 			this.lblCurrentCursor_Xlabel.TabIndex = 21;
 			this.lblCurrentCursor_Xlabel.Text = "X:";
 			this.lblCurrentCursor_Xlabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			this.toolTip1.SetToolTip(this.lblCurrentCursor_Xlabel, "Current mouse coordinates");
 			// 
 			// lblCurrentCursor_X
 			// 
 			this.lblCurrentCursor_X.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblCurrentCursor_X.AutoSize = true;
-			this.lblCurrentCursor_X.Location = new System.Drawing.Point(422, 247);
+			this.lblCurrentCursor_X.Location = new System.Drawing.Point(547, 277);
 			this.lblCurrentCursor_X.Name = "lblCurrentCursor_X";
 			this.lblCurrentCursor_X.Size = new System.Drawing.Size(31, 13);
 			this.lblCurrentCursor_X.TabIndex = 22;
 			this.lblCurrentCursor_X.Text = "1000";
 			this.lblCurrentCursor_X.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.toolTip1.SetToolTip(this.lblCurrentCursor_X, "Current mouse coordinates");
 			// 
 			// lblCurrentCursor_Y
 			// 
 			this.lblCurrentCursor_Y.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblCurrentCursor_Y.AutoSize = true;
-			this.lblCurrentCursor_Y.Location = new System.Drawing.Point(422, 262);
+			this.lblCurrentCursor_Y.Location = new System.Drawing.Point(547, 292);
 			this.lblCurrentCursor_Y.Name = "lblCurrentCursor_Y";
 			this.lblCurrentCursor_Y.Size = new System.Drawing.Size(31, 13);
 			this.lblCurrentCursor_Y.TabIndex = 24;
 			this.lblCurrentCursor_Y.Text = "1000";
 			this.lblCurrentCursor_Y.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.toolTip1.SetToolTip(this.lblCurrentCursor_Y, "Current mouse coordinates");
 			// 
 			// lblCurrentCursor_Ylabel
 			// 
 			this.lblCurrentCursor_Ylabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblCurrentCursor_Ylabel.AutoSize = true;
-			this.lblCurrentCursor_Ylabel.Location = new System.Drawing.Point(410, 262);
+			this.lblCurrentCursor_Ylabel.Location = new System.Drawing.Point(535, 292);
 			this.lblCurrentCursor_Ylabel.Name = "lblCurrentCursor_Ylabel";
 			this.lblCurrentCursor_Ylabel.Size = new System.Drawing.Size(17, 13);
 			this.lblCurrentCursor_Ylabel.TabIndex = 23;
 			this.lblCurrentCursor_Ylabel.Text = "Y:";
 			this.lblCurrentCursor_Ylabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			this.toolTip1.SetToolTip(this.lblCurrentCursor_Ylabel, "Current mouse coordinates");
 			// 
 			// btnSaveLocationOpen
 			// 
 			this.btnSaveLocationOpen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnSaveLocationOpen.Location = new System.Drawing.Point(378, 44);
+			this.btnSaveLocationOpen.Location = new System.Drawing.Point(503, 44);
 			this.btnSaveLocationOpen.Name = "btnSaveLocationOpen";
 			this.btnSaveLocationOpen.Size = new System.Drawing.Size(57, 22);
-			this.btnSaveLocationOpen.TabIndex = 25;
+			this.btnSaveLocationOpen.TabIndex = 3;
 			this.btnSaveLocationOpen.Text = "Open";
 			this.btnSaveLocationOpen.UseVisualStyleBackColor = true;
 			this.btnSaveLocationOpen.Click += new System.EventHandler(this.btnSaveLocationOpen_Click);
@@ -395,11 +412,12 @@
 			// btnStop
 			// 
 			this.btnStop.Enabled = false;
-			this.btnStop.Location = new System.Drawing.Point(93, 252);
+			this.btnStop.Location = new System.Drawing.Point(93, 282);
 			this.btnStop.Name = "btnStop";
 			this.btnStop.Size = new System.Drawing.Size(75, 23);
-			this.btnStop.TabIndex = 27;
+			this.btnStop.TabIndex = 12;
 			this.btnStop.Text = "Stop";
+			this.toolTip1.SetToolTip(this.btnStop, "Stop taking automatic screenshots");
 			this.btnStop.UseVisualStyleBackColor = true;
 			this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
 			// 
@@ -407,6 +425,8 @@
 			// 
 			this.grpBasicSettings.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.grpBasicSettings.Controls.Add(this.lblImageFormat);
+			this.grpBasicSettings.Controls.Add(this.cmbImageFormat);
 			this.grpBasicSettings.Controls.Add(this.nudInterval);
 			this.grpBasicSettings.Controls.Add(this.lblInterval);
 			this.grpBasicSettings.Controls.Add(this.lblSaveLocation);
@@ -417,7 +437,7 @@
 			this.grpBasicSettings.Controls.Add(this.cmbRegionToCapture);
 			this.grpBasicSettings.Location = new System.Drawing.Point(12, 12);
 			this.grpBasicSettings.Name = "grpBasicSettings";
-			this.grpBasicSettings.Size = new System.Drawing.Size(441, 101);
+			this.grpBasicSettings.Size = new System.Drawing.Size(566, 131);
 			this.grpBasicSettings.TabIndex = 28;
 			this.grpBasicSettings.TabStop = false;
 			this.grpBasicSettings.Text = "Basic Settings";
@@ -427,16 +447,17 @@
 			this.progNextScreenshot.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.progNextScreenshot.Enabled = false;
-			this.progNextScreenshot.Location = new System.Drawing.Point(148, 218);
+			this.progNextScreenshot.Location = new System.Drawing.Point(148, 248);
 			this.progNextScreenshot.Name = "progNextScreenshot";
-			this.progNextScreenshot.Size = new System.Drawing.Size(244, 23);
+			this.progNextScreenshot.Size = new System.Drawing.Size(369, 23);
 			this.progNextScreenshot.TabIndex = 29;
+			this.toolTip1.SetToolTip(this.progNextScreenshot, "Progress towards next automatic screenshot");
 			// 
 			// lblProgressBar
 			// 
 			this.lblProgressBar.AutoSize = true;
 			this.lblProgressBar.Enabled = false;
-			this.lblProgressBar.Location = new System.Drawing.Point(12, 224);
+			this.lblProgressBar.Location = new System.Drawing.Point(12, 253);
 			this.lblProgressBar.Name = "lblProgressBar";
 			this.lblProgressBar.Size = new System.Drawing.Size(130, 13);
 			this.lblProgressBar.TabIndex = 30;
@@ -447,28 +468,72 @@
 			this.lblTimeRemaining.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblTimeRemaining.AutoSize = true;
 			this.lblTimeRemaining.Enabled = false;
-			this.lblTimeRemaining.Location = new System.Drawing.Point(398, 224);
+			this.lblTimeRemaining.Location = new System.Drawing.Point(523, 253);
 			this.lblTimeRemaining.Name = "lblTimeRemaining";
 			this.lblTimeRemaining.Size = new System.Drawing.Size(55, 13);
 			this.lblTimeRemaining.TabIndex = 31;
 			this.lblTimeRemaining.Text = "(00:00:00)";
+			this.toolTip1.SetToolTip(this.lblTimeRemaining, "Time remaining until next automatic screenshot");
 			// 
 			// btnManualScreenshot
 			// 
 			this.btnManualScreenshot.Enabled = false;
-			this.btnManualScreenshot.Location = new System.Drawing.Point(174, 252);
+			this.btnManualScreenshot.Location = new System.Drawing.Point(174, 282);
 			this.btnManualScreenshot.Name = "btnManualScreenshot";
 			this.btnManualScreenshot.Size = new System.Drawing.Size(138, 23);
-			this.btnManualScreenshot.TabIndex = 32;
+			this.btnManualScreenshot.TabIndex = 13;
 			this.btnManualScreenshot.Text = "Take Manual Screenshot";
+			this.toolTip1.SetToolTip(this.btnManualScreenshot, "Take a screen shot right now, using the next number in sequence");
 			this.btnManualScreenshot.UseVisualStyleBackColor = true;
 			this.btnManualScreenshot.Click += new System.EventHandler(this.btnManualScreenshot_Click);
+			// 
+			// cmbImageFormat
+			// 
+			this.cmbImageFormat.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.cmbImageFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cmbImageFormat.FormattingEnabled = true;
+			this.cmbImageFormat.Items.AddRange(new object[] {
+            "JPG",
+            "PNG",
+            "BMP",
+            "TIFF",
+            "GIF"});
+			this.cmbImageFormat.Location = new System.Drawing.Point(132, 98);
+			this.cmbImageFormat.Name = "cmbImageFormat";
+			this.cmbImageFormat.Size = new System.Drawing.Size(302, 21);
+			this.cmbImageFormat.TabIndex = 5;
+			this.toolTip1.SetToolTip(this.cmbImageFormat, "Image format in which to save the image");
+			// 
+			// lblImageFormat
+			// 
+			this.lblImageFormat.AutoSize = true;
+			this.lblImageFormat.Location = new System.Drawing.Point(13, 101);
+			this.lblImageFormat.Name = "lblImageFormat";
+			this.lblImageFormat.Size = new System.Drawing.Size(71, 13);
+			this.lblImageFormat.TabIndex = 27;
+			this.lblImageFormat.Text = "Image Format";
+			this.toolTip1.SetToolTip(this.lblImageFormat, "Image format in which to save the image");
+			// 
+			// btnOpenCurrentFolder
+			// 
+			this.btnOpenCurrentFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnOpenCurrentFolder.Enabled = false;
+			this.btnOpenCurrentFolder.Location = new System.Drawing.Point(318, 282);
+			this.btnOpenCurrentFolder.Name = "btnOpenCurrentFolder";
+			this.btnOpenCurrentFolder.Size = new System.Drawing.Size(83, 22);
+			this.btnOpenCurrentFolder.TabIndex = 15;
+			this.btnOpenCurrentFolder.Text = "Open Folder";
+			this.toolTip1.SetToolTip(this.btnOpenCurrentFolder, "Open the folder into which automatic screenshots are currently being saved");
+			this.btnOpenCurrentFolder.UseVisualStyleBackColor = true;
+			this.btnOpenCurrentFolder.Click += new System.EventHandler(this.btnOpenCurrentFolder_Click);
 			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(466, 284);
+			this.ClientSize = new System.Drawing.Size(591, 315);
+			this.Controls.Add(this.btnOpenCurrentFolder);
 			this.Controls.Add(this.btnManualScreenshot);
 			this.Controls.Add(this.lblTimeRemaining);
 			this.Controls.Add(this.lblProgressBar);
@@ -483,7 +548,7 @@
 			this.Controls.Add(this.grpSelectedArea);
 			this.Controls.Add(this.btnStart);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-			this.MinimumSize = new System.Drawing.Size(482, 323);
+			this.MinimumSize = new System.Drawing.Size(607, 354);
 			this.Name = "Form1";
 			this.Text = "ScreenShotter 3000X";
 			this.Load += new System.EventHandler(this.Form1_Load);
@@ -536,6 +601,9 @@
 		private System.Windows.Forms.Label lblProgressBar;
 		private System.Windows.Forms.Label lblTimeRemaining;
 		private System.Windows.Forms.Button btnManualScreenshot;
+		private System.Windows.Forms.Label lblImageFormat;
+		private System.Windows.Forms.ComboBox cmbImageFormat;
+		private System.Windows.Forms.Button btnOpenCurrentFolder;
 	}
 }
 
