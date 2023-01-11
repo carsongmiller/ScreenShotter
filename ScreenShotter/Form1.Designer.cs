@@ -59,6 +59,10 @@
 			this.btnSaveLocationOpen = new System.Windows.Forms.Button();
 			this.btnStop = new System.Windows.Forms.Button();
 			this.grpBasicSettings = new System.Windows.Forms.GroupBox();
+			this.progNextScreenshot = new System.Windows.Forms.ProgressBar();
+			this.lblProgressBar = new System.Windows.Forms.Label();
+			this.lblTimeRemaining = new System.Windows.Forms.Label();
+			this.btnManualScreenshot = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.nudInterval)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.nudSelectedAreaUpperLeft_X)).BeginInit();
 			this.grpSelectedArea.SuspendLayout();
@@ -80,7 +84,7 @@
             0,
             0});
 			this.nudInterval.Name = "nudInterval";
-			this.nudInterval.Size = new System.Drawing.Size(136, 20);
+			this.nudInterval.Size = new System.Drawing.Size(177, 20);
 			this.nudInterval.TabIndex = 0;
 			this.nudInterval.Value = new decimal(new int[] {
             10,
@@ -112,14 +116,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.tbSaveLocation.Location = new System.Drawing.Point(132, 45);
 			this.tbSaveLocation.Name = "tbSaveLocation";
-			this.tbSaveLocation.Size = new System.Drawing.Size(136, 20);
+			this.tbSaveLocation.Size = new System.Drawing.Size(177, 20);
 			this.tbSaveLocation.TabIndex = 1;
 			this.tbSaveLocation.Text = "C:\\";
 			// 
 			// btnSaveLocationBrowse
 			// 
 			this.btnSaveLocationBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnSaveLocationBrowse.Location = new System.Drawing.Point(274, 44);
+			this.btnSaveLocationBrowse.Location = new System.Drawing.Point(315, 44);
 			this.btnSaveLocationBrowse.Name = "btnSaveLocationBrowse";
 			this.btnSaveLocationBrowse.Size = new System.Drawing.Size(57, 22);
 			this.btnSaveLocationBrowse.TabIndex = 2;
@@ -129,8 +133,8 @@
 			// 
 			// btnTest
 			// 
-			this.btnTest.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.btnTest.Location = new System.Drawing.Point(205, 213);
+			this.btnTest.Enabled = false;
+			this.btnTest.Location = new System.Drawing.Point(318, 252);
 			this.btnTest.Name = "btnTest";
 			this.btnTest.Size = new System.Drawing.Size(75, 23);
 			this.btnTest.TabIndex = 26;
@@ -141,9 +145,8 @@
 			// 
 			// btnStart
 			// 
-			this.btnStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.btnStart.Enabled = false;
-			this.btnStart.Location = new System.Drawing.Point(12, 213);
+			this.btnStart.Location = new System.Drawing.Point(12, 252);
 			this.btnStart.Name = "btnStart";
 			this.btnStart.Size = new System.Drawing.Size(75, 23);
 			this.btnStart.TabIndex = 9;
@@ -168,7 +171,7 @@
 			this.cmbRegionToCapture.FormattingEnabled = true;
 			this.cmbRegionToCapture.Location = new System.Drawing.Point(132, 71);
 			this.cmbRegionToCapture.Name = "cmbRegionToCapture";
-			this.cmbRegionToCapture.Size = new System.Drawing.Size(136, 21);
+			this.cmbRegionToCapture.Size = new System.Drawing.Size(177, 21);
 			this.cmbRegionToCapture.TabIndex = 3;
 			this.cmbRegionToCapture.SelectedIndexChanged += new System.EventHandler(this.cmbSelectedArea_SelectedIndexChanged);
 			// 
@@ -216,7 +219,7 @@
 			this.grpSelectedArea.Enabled = false;
 			this.grpSelectedArea.Location = new System.Drawing.Point(12, 119);
 			this.grpSelectedArea.Name = "grpSelectedArea";
-			this.grpSelectedArea.Size = new System.Drawing.Size(400, 78);
+			this.grpSelectedArea.Size = new System.Drawing.Size(441, 78);
 			this.grpSelectedArea.TabIndex = 4;
 			this.grpSelectedArea.TabStop = false;
 			this.grpSelectedArea.Text = "Selected Area";
@@ -336,9 +339,9 @@
 			// 
 			// lblCurrentCursor_Xlabel
 			// 
-			this.lblCurrentCursor_Xlabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblCurrentCursor_Xlabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblCurrentCursor_Xlabel.AutoSize = true;
-			this.lblCurrentCursor_Xlabel.Location = new System.Drawing.Point(370, 213);
+			this.lblCurrentCursor_Xlabel.Location = new System.Drawing.Point(410, 247);
 			this.lblCurrentCursor_Xlabel.Name = "lblCurrentCursor_Xlabel";
 			this.lblCurrentCursor_Xlabel.Size = new System.Drawing.Size(17, 13);
 			this.lblCurrentCursor_Xlabel.TabIndex = 21;
@@ -347,9 +350,9 @@
 			// 
 			// lblCurrentCursor_X
 			// 
-			this.lblCurrentCursor_X.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblCurrentCursor_X.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblCurrentCursor_X.AutoSize = true;
-			this.lblCurrentCursor_X.Location = new System.Drawing.Point(382, 213);
+			this.lblCurrentCursor_X.Location = new System.Drawing.Point(422, 247);
 			this.lblCurrentCursor_X.Name = "lblCurrentCursor_X";
 			this.lblCurrentCursor_X.Size = new System.Drawing.Size(31, 13);
 			this.lblCurrentCursor_X.TabIndex = 22;
@@ -358,9 +361,9 @@
 			// 
 			// lblCurrentCursor_Y
 			// 
-			this.lblCurrentCursor_Y.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblCurrentCursor_Y.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblCurrentCursor_Y.AutoSize = true;
-			this.lblCurrentCursor_Y.Location = new System.Drawing.Point(382, 228);
+			this.lblCurrentCursor_Y.Location = new System.Drawing.Point(422, 262);
 			this.lblCurrentCursor_Y.Name = "lblCurrentCursor_Y";
 			this.lblCurrentCursor_Y.Size = new System.Drawing.Size(31, 13);
 			this.lblCurrentCursor_Y.TabIndex = 24;
@@ -369,9 +372,9 @@
 			// 
 			// lblCurrentCursor_Ylabel
 			// 
-			this.lblCurrentCursor_Ylabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblCurrentCursor_Ylabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblCurrentCursor_Ylabel.AutoSize = true;
-			this.lblCurrentCursor_Ylabel.Location = new System.Drawing.Point(370, 228);
+			this.lblCurrentCursor_Ylabel.Location = new System.Drawing.Point(410, 262);
 			this.lblCurrentCursor_Ylabel.Name = "lblCurrentCursor_Ylabel";
 			this.lblCurrentCursor_Ylabel.Size = new System.Drawing.Size(17, 13);
 			this.lblCurrentCursor_Ylabel.TabIndex = 23;
@@ -381,7 +384,7 @@
 			// btnSaveLocationOpen
 			// 
 			this.btnSaveLocationOpen.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnSaveLocationOpen.Location = new System.Drawing.Point(337, 44);
+			this.btnSaveLocationOpen.Location = new System.Drawing.Point(378, 44);
 			this.btnSaveLocationOpen.Name = "btnSaveLocationOpen";
 			this.btnSaveLocationOpen.Size = new System.Drawing.Size(57, 22);
 			this.btnSaveLocationOpen.TabIndex = 25;
@@ -391,9 +394,8 @@
 			// 
 			// btnStop
 			// 
-			this.btnStop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.btnStop.Enabled = false;
-			this.btnStop.Location = new System.Drawing.Point(93, 213);
+			this.btnStop.Location = new System.Drawing.Point(93, 252);
 			this.btnStop.Name = "btnStop";
 			this.btnStop.Size = new System.Drawing.Size(75, 23);
 			this.btnStop.TabIndex = 27;
@@ -415,16 +417,62 @@
 			this.grpBasicSettings.Controls.Add(this.cmbRegionToCapture);
 			this.grpBasicSettings.Location = new System.Drawing.Point(12, 12);
 			this.grpBasicSettings.Name = "grpBasicSettings";
-			this.grpBasicSettings.Size = new System.Drawing.Size(400, 101);
+			this.grpBasicSettings.Size = new System.Drawing.Size(441, 101);
 			this.grpBasicSettings.TabIndex = 28;
 			this.grpBasicSettings.TabStop = false;
 			this.grpBasicSettings.Text = "Basic Settings";
+			// 
+			// progNextScreenshot
+			// 
+			this.progNextScreenshot.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.progNextScreenshot.Enabled = false;
+			this.progNextScreenshot.Location = new System.Drawing.Point(148, 218);
+			this.progNextScreenshot.Name = "progNextScreenshot";
+			this.progNextScreenshot.Size = new System.Drawing.Size(244, 23);
+			this.progNextScreenshot.TabIndex = 29;
+			// 
+			// lblProgressBar
+			// 
+			this.lblProgressBar.AutoSize = true;
+			this.lblProgressBar.Enabled = false;
+			this.lblProgressBar.Location = new System.Drawing.Point(12, 224);
+			this.lblProgressBar.Name = "lblProgressBar";
+			this.lblProgressBar.Size = new System.Drawing.Size(130, 13);
+			this.lblProgressBar.TabIndex = 30;
+			this.lblProgressBar.Text = "Time until next screenshot";
+			// 
+			// lblTimeRemaining
+			// 
+			this.lblTimeRemaining.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblTimeRemaining.AutoSize = true;
+			this.lblTimeRemaining.Enabled = false;
+			this.lblTimeRemaining.Location = new System.Drawing.Point(398, 224);
+			this.lblTimeRemaining.Name = "lblTimeRemaining";
+			this.lblTimeRemaining.Size = new System.Drawing.Size(55, 13);
+			this.lblTimeRemaining.TabIndex = 31;
+			this.lblTimeRemaining.Text = "(00:00:00)";
+			// 
+			// btnManualScreenshot
+			// 
+			this.btnManualScreenshot.Enabled = false;
+			this.btnManualScreenshot.Location = new System.Drawing.Point(174, 252);
+			this.btnManualScreenshot.Name = "btnManualScreenshot";
+			this.btnManualScreenshot.Size = new System.Drawing.Size(138, 23);
+			this.btnManualScreenshot.TabIndex = 32;
+			this.btnManualScreenshot.Text = "Take Manual Screenshot";
+			this.btnManualScreenshot.UseVisualStyleBackColor = true;
+			this.btnManualScreenshot.Click += new System.EventHandler(this.btnManualScreenshot_Click);
 			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(425, 248);
+			this.ClientSize = new System.Drawing.Size(466, 284);
+			this.Controls.Add(this.btnManualScreenshot);
+			this.Controls.Add(this.lblTimeRemaining);
+			this.Controls.Add(this.lblProgressBar);
+			this.Controls.Add(this.progNextScreenshot);
 			this.Controls.Add(this.grpBasicSettings);
 			this.Controls.Add(this.btnStop);
 			this.Controls.Add(this.btnTest);
@@ -435,7 +483,7 @@
 			this.Controls.Add(this.grpSelectedArea);
 			this.Controls.Add(this.btnStart);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-			this.MinimumSize = new System.Drawing.Size(441, 287);
+			this.MinimumSize = new System.Drawing.Size(482, 323);
 			this.Name = "Form1";
 			this.Text = "ScreenShotter 3000X";
 			this.Load += new System.EventHandler(this.Form1_Load);
@@ -484,6 +532,10 @@
 		private System.Windows.Forms.Button btnTest;
 		private System.Windows.Forms.Button btnStop;
 		private System.Windows.Forms.GroupBox grpBasicSettings;
+		private System.Windows.Forms.ProgressBar progNextScreenshot;
+		private System.Windows.Forms.Label lblProgressBar;
+		private System.Windows.Forms.Label lblTimeRemaining;
+		private System.Windows.Forms.Button btnManualScreenshot;
 	}
 }
 

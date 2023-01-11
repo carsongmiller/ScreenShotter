@@ -18,6 +18,10 @@ namespace ScreenShotter
 		System.Timers.Timer cursorPositionTimer;
 		System.Timers.Timer screenCaptureTimer;
 
+		System.Timers.Timer updateUITimer;
+
+		Stopwatch progressStopwatch;
+
 		int imageCount = 0;
 		string currentSaveDir;
 
@@ -31,11 +35,18 @@ namespace ScreenShotter
 			TopMost = true;
 
 			populateRegionOptions();
+
 			cursorPositionTimer = new System.Timers.Timer();
 			cursorPositionTimer.Elapsed += CursorPositionTimer_Elapsed;
 			cursorPositionTimer.Interval = 50;
 			cursorPositionTimer.AutoReset = true;
 			cursorPositionTimer.Start();
+
+			updateUITimer = new System.Timers.Timer();
+			updateUITimer.Elapsed += UpdateUITimer_Elapsed;
+			updateUITimer.Interval = 50;
+			updateUITimer.AutoReset = true;
+			updateUITimer.Start();
 
 			screenCaptureTimer = new System.Timers.Timer();
 			screenCaptureTimer.Elapsed += ScreenCaptureTimer_Elapsed;
@@ -44,14 +55,56 @@ namespace ScreenShotter
 			toolTip1.SetToolTip(tbSaveLocation, tbSaveLocation.Text);
 		}
 
+		private void StartScreenshotTimer(double interval)
+		{
+			screenCaptureTimer.Interval = interval;
+			screenCaptureTimer.AutoReset = true;
+			screenCaptureTimer.Start();
+
+			progressStopwatch = new Stopwatch();
+			progressStopwatch.Start();
+		}
+
+		private void UpdateUITimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+		{
+			BeginInvoke((Action)delegate
+			{
+				//if the screenshot timer is running, update a progress bar showing how long until the next picture
+				if (screenCaptureTimer.Enabled)
+				{
+					var max = (int)(screenCaptureTimer.Interval + 0.5);
+					var current = (int)(progressStopwatch.ElapsedMilliseconds + 0.5);
+					current = current <= max ? current : max;
+					var difference = max - current;
+
+					var difference_seconds = (int)(((double)difference / 1000) + 0.5);
+					int hours = (int)(difference_seconds / 3600);
+					int minutes = (int)((difference_seconds - (hours * 3600)) / 60);
+					int seconds = difference_seconds - (hours * 3600) - (minutes * 60);
+					string time = $"({hours.ToString("00")}:{minutes.ToString("00")}:{seconds.ToString("00")})";
+
+					lblTimeRemaining.Text = time;
+
+					progNextScreenshot.Maximum = max;
+					progNextScreenshot.Value = current;
+				}
+			});
+		}
+
 		private void ScreenCaptureTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
 		{
 			BeginInvoke((Action)delegate
 			{
-				string filePath = $"{currentSaveDir}\\{imageCount}.jpg";
-				TakeScreenshot(filePath);
-				imageCount += 1;
+				TakeOfficialScreenshot();
+				progressStopwatch.Restart();
 			});
+		}
+
+		private void TakeOfficialScreenshot()
+		{
+			string filePath = $"{currentSaveDir}\\{imageCount}.jpg";
+			TakeScreenshot(filePath);
+			imageCount += 1;
 		}
 
 		private void CursorPositionTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -98,6 +151,7 @@ namespace ScreenShotter
 		{
 			grpSelectedArea.Enabled = cmbRegionToCapture.SelectedItem.ToString() == "Specified Area";
 			btnStart.Enabled = cmbRegionToCapture.SelectedIndex >= 0;
+			btnTest.Enabled = cmbRegionToCapture.SelectedIndex >= 0;
 		}
 
 		private void btnStart_Click(object sender, EventArgs e)
@@ -113,14 +167,17 @@ namespace ScreenShotter
 
 			imageCount = 0;
 
-			screenCaptureTimer.Interval = (double)nudInterval.Value * 60000;
-			screenCaptureTimer.AutoReset = true;
-			screenCaptureTimer.Start();
+			StartScreenshotTimer((double)nudInterval.Value * 60000);
 
 			btnStop.Enabled = true;
 			btnStart.Enabled = false;
+			btnManualScreenshot.Enabled = true;
 			grpBasicSettings.Enabled = false;
 			grpSelectedArea.Enabled = false;
+
+			lblProgressBar.Enabled = true;
+			progNextScreenshot.Enabled = true;
+			lblTimeRemaining.Enabled = true;
 		}
 
 		private void CaptureMonitor(int monitorIndex, string saveFilePath)
@@ -246,8 +303,22 @@ namespace ScreenShotter
 
 			btnStart.Enabled = true;
 			btnStop.Enabled = false;
+			btnManualScreenshot.Enabled = false;
 			grpBasicSettings.Enabled = true;
 			grpSelectedArea.Enabled = cmbRegionToCapture.SelectedItem.ToString() == "Specified Area";
+
+			progressStopwatch.Stop();
+			progNextScreenshot.Value = 0;
+			lblTimeRemaining.Text = "(00:00:00)";
+
+			lblProgressBar.Enabled = false;
+			progNextScreenshot.Enabled = false;
+			lblTimeRemaining.Enabled = false;
+		}
+
+		private void btnManualScreenshot_Click(object sender, EventArgs e)
+		{
+			TakeOfficialScreenshot();
 		}
 	}
 }
