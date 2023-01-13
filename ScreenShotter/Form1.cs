@@ -10,6 +10,8 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
+using static System.Net.Mime.MediaTypeNames;
+using System.Drawing.Drawing2D;
 
 namespace ScreenShotter
 {
@@ -32,8 +34,6 @@ namespace ScreenShotter
 
 		private void Form1_Load(object sender, EventArgs e)
 		{
-			TopMost = true;
-
 			populateRegionOptions();
 
 			cursorPositionTimer = new System.Timers.Timer();
@@ -150,12 +150,16 @@ namespace ScreenShotter
 
 		private void CursorPositionTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
 		{
-			BeginInvoke((Action)delegate
+			try
 			{
-				var mousePos = Cursor.Position;
-				lblCurrentCursor_X.Text = mousePos.X.ToString();
-				lblCurrentCursor_Y.Text = mousePos.Y.ToString();
-			});
+				BeginInvoke((Action)delegate
+				{
+					var mousePos = Cursor.Position;
+					lblCurrentCursor_X.Text = mousePos.X.ToString();
+					lblCurrentCursor_Y.Text = mousePos.Y.ToString();
+				});
+			}
+			catch { }
 		}
 
 		private void populateRegionOptions()
@@ -266,6 +270,11 @@ namespace ScreenShotter
 				EncoderParameters myEncoderParameters = new EncoderParameters(1);
 				EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, 100L); //Always take at the highest qualitiy
 				myEncoderParameters.Param[0] = myEncoderParameter;
+
+				if (cbOverlayTimestamp.Checked)
+				{
+					WriteTimestampToBMP(captureBitmap);
+				}
 
 				//Save the image
 				captureBitmap.Save(saveFilePath, formatSpecificEncoder, myEncoderParameters);
@@ -401,6 +410,66 @@ namespace ScreenShotter
 			{
 				MessageBox.Show($"Directory does not exist:\n\n{currentSaveDir}");
 			}
+		}
+
+		private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Close();
+		}
+
+		private void mergeFoldersToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var mergeForm = new frmMergeFolders();
+			mergeForm.Show();
+		}
+
+		private void topMostToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var menuItem = (ToolStripMenuItem)sender;
+			menuItem.Checked = !menuItem.Checked;
+			TopMost = menuItem.Checked;
+		}
+
+		private Bitmap WriteTimestampToBMP(Bitmap bmp)
+		{
+			//Draw rectangle in bottom right
+			int width = 250;
+			int height = 20;
+			RectangleF rectf = new RectangleF(bmp.Width - width, bmp.Height - height, width, 20);
+			var reg = new Region(rectf);
+
+			Graphics g = Graphics.FromImage(bmp);
+
+			g.SmoothingMode = SmoothingMode.AntiAlias;
+			g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+			g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+			g.FillRegion(Brushes.White, reg);
+			g.DrawString(DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss (UTCzz)"), new Font("Tahoma", 12), Brushes.Black, rectf);
+
+			g.Flush();
+
+			return bmp;
+		}
+
+		private Bitmap WriteTimestampToBMP(Bitmap bmp, DateTime timestamp)
+		{
+			//Draw rectangle in bottom right
+			int width = 250;
+			int height = 20;
+			RectangleF rectf = new RectangleF(bmp.Width - width, bmp.Height - height, width, 20);
+			var reg = new Region(rectf);
+
+			Graphics g = Graphics.FromImage(bmp);
+
+			g.SmoothingMode = SmoothingMode.AntiAlias;
+			g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+			g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+			g.FillRegion(Brushes.White, reg);
+			g.DrawString(timestamp.ToString("MM/dd/yyyy HH:mm:ss (UTCzz)"), new Font("Tahoma", 12), Brushes.Black, rectf);
+
+			g.Flush();
+
+			return bmp;
 		}
 	}
 }
